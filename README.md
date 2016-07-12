@@ -21,7 +21,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+class Parser
+  include Xmd::DSL
+
+  node message: :description
+  nodes items: :item do
+    node external_url: :link
+    attribute :published, class: :date
+
+    nodes dates: :date do
+      note :beginning, class: :date
+      note :end, class: :date
+    end
+  end
+end
+
+feed = open url do |xml|
+  Parser.parse xml
+end
+
+feed.message #=> 'A description'
+item = feed.items.first
+item.external_url #=> The entries Link
+
+```
 
 ## Development
 
